@@ -1,0 +1,183 @@
+{
+  "hero": {
+    "name": "Alex Morgan",
+    "title": "Creative Designer & Developer",
+    "tagline": "Crafting digital experiences at the intersection of art and technology",
+    "cta": {
+      "primary": "View Work",
+      "secondary": "Get in Touch"
+    }
+  },
+  "about": {
+    "heading": "About Me",
+    "description": "I'm a multidisciplinary designer and developer with a passion for creating innovative digital experiences. With over 8 years of experience, I blend aesthetics with functionality to deliver exceptional results.",
+    "stats": [
+      { "label": "Years Experience", "value": "8+" },
+      { "label": "Projects Completed", "value": "150+" },
+      { "label": "Happy Clients", "value": "75+" },
+      { "label": "Awards Won", "value": "12" }
+    ]
+  },
+  "projects": {
+    "heading": "Featured Work",
+    "items": [
+      {
+        "id": 1,
+        "title": "Ethereal Commerce",
+        "category": "E-commerce Platform",
+        "description": "A next-generation shopping experience with immersive 3D product visualization",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
+        "tags": ["React", "Three.js", "Node.js"],
+        "year": "2024"
+      },
+      {
+        "id": 2,
+        "title": "Mindful App",
+        "category": "Mobile Application",
+        "description": "Mental wellness platform with AI-powered meditation guides",
+        "image": "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&h=600&fit=crop",
+        "tags": ["React Native", "AI/ML", "Firebase"],
+        "year": "2024"
+      },
+      {
+        "id": 3,
+        "title": "Quantum Analytics",
+        "category": "Data Visualization",
+        "description": "Enterprise dashboard with real-time data insights and predictive analytics",
+        "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
+        "tags": ["Vue.js", "D3.js", "Python"],
+        "year": "2023"
+      },
+      {
+        "id": 4,
+        "title": "Aurora Brand Identity",
+        "category": "Branding",
+        "description": "Complete visual identity system for a sustainable fashion brand",
+        "image": "https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&h=600&fit=crop",
+        "tags": ["Figma", "Illustrator", "Strategy"],
+        "year": "2023"
+      }
+    ]
+  },
+  "skills": {
+    "heading": "Expertise",
+    "categories": [
+      {
+        "name": "Design",
+        "items": ["UI/UX Design", "Visual Design", "Prototyping", "Design Systems", "Brand Identity", "Motion Design"]
+      },
+      {
+        "name": "Development",
+        "items": ["React/Next.js", "TypeScript", "Node.js", "Three.js", "WebGL", "Animation"]
+      },
+      {
+        "name": "Tools",
+        "items": ["Figma", "Adobe Suite", "Blender", "After Effects", "Git", "VS Code"]
+      },
+      {
+        "name": "Soft Skills",
+        "items": ["Leadership", "Communication", "Problem Solving", "Time Management", "Collaboration", "Mentoring"]
+      }
+    ]
+  },
+  "blog": {
+    "heading": "Latest Thoughts",
+    "posts": [
+      {
+        "id": 1,
+        "title": "The Future of Web Design: Embracing Minimalism",
+        "excerpt": "Exploring how minimalist design principles are shaping the future of digital experiences",
+        "date": "2024-01-15",
+        "readTime": "5 min read",
+        "category": "Design"
+      },
+      {
+        "id": 2,
+        "title": "Building Performant React Applications",
+        "excerpt": "Best practices for optimizing React apps and improving user experience",
+        "date": "2024-01-08",
+        "readTime": "8 min read",
+        "category": "Development"
+      },
+      {
+        "id": 3,
+        "title": "Animation in Modern Web Experiences",
+        "excerpt": "How subtle animations can elevate your website's user experience",
+        "date": "2023-12-20",
+        "readTime": "6 min read",
+        "category": "Design"
+      }
+    ]
+  },
+  "awards": {
+    "heading": "Recognition",
+    "items": [
+      {
+        "title": "Awwwards Site of the Day",
+        "organization": "Awwwards",
+        "year": "2024",
+        "project": "Ethereal Commerce"
+      },
+      {
+        "title": "CSS Design Awards Winner",
+        "organization": "CSS Design Awards",
+        "year": "2023",
+        "project": "Quantum Analytics"
+      },
+      {
+        "title": "FWA Mobile of the Day",
+        "organization": "FWA",
+        "year": "2023",
+        "project": "Mindful App"
+      },
+      {
+        "title": "Best Innovation Award",
+        "organization": "Design Summit",
+        "year": "2023",
+        "project": "Aurora Brand Identity"
+      }
+    ]
+  },
+  "certifications": {
+    "heading": "Certifications",
+    "items": [
+      {
+        "name": "Advanced React Developer",
+        "issuer": "Meta",
+        "date": "2023",
+        "credential": "META-RCT-2023-001"
+      },
+      {
+        "name": "UX Design Professional",
+        "issuer": "Google",
+        "date": "2022",
+        "credential": "GOOG-UX-2022-045"
+      },
+      {
+        "name": "AWS Certified Solutions Architect",
+        "issuer": "Amazon Web Services",
+        "date": "2023",
+        "credential": "AWS-SA-2023-892"
+      }
+    ]
+  },
+  "contact": {
+    "heading": "Let's Connect",
+    "description": "Have a project in mind or just want to chat? I'm always open to discussing new opportunities and collaborations.",
+    "email": "hello@alexmorgan.design",
+    "social": [
+      { "platform": "GitHub", "url": "https://github.com" },
+      { "platform": "LinkedIn", "url": "https://linkedin.com" },
+      { "platform": "Dribbble", "url": "https://dribbble.com" },
+      { "platform": "Twitter", "url": "https://twitter.com" }
+    ]
+  },
+  "marqueeTexts": [
+    "CREATIVE DESIGN",
+    "WEB DEVELOPMENT",
+    "USER EXPERIENCE",
+    "DIGITAL INNOVATION",
+    "BRAND IDENTITY",
+    "INTERACTIVE MEDIA"
+  ]
+}
