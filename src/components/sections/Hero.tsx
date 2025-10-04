@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 interface HeroProps {
   data: {
@@ -15,8 +15,49 @@ interface HeroProps {
   }
 }
 
+interface Node {
+  x: number
+  y: number
+  vx: number
+  vy: number
+  originalX: number
+  originalY: number
+}
+
 export default function Hero({ data }: HeroProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [nodes, setNodes] = useState<Node[]>([])
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const animationFrameRef = useRef<number>()
+  
+  useEffect(() => {
+    // Initialize grid of nodes
+    const nodeGrid: Node[] = []
+    const cols = 12
+    const rows = 8
+    const canvas = canvasRef.current
+    if (!canvas) return
+    
+    const width = canvas.width = window.innerWidth
+    const height = canvas.height = window.innerHeight
+    
+    for (let i = 0; i < cols; i++) {
+      for (let j = 0; j < rows; j++) {
+        const x = (width / (cols - 1)) * i
+        const y = (height / (rows - 1)) * j
+        nodeGrid.push({
+          x,
+          y,
+          vx: 0,
+          vy: 0,
+          originalX: x,
+          originalY: y
+        })
+      }
+    }
+    
+    setNodes(nodeGrid)
+  }, [])
   
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -27,6 +68,94 @@ export default function Hero({ data }: HeroProps) {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      
+      // Update node positions based on mouse
+      const updatedNodes = nodes.map(node => {
+        const dx = mousePosition.x - node.x
+        const dy = mousePosition.y - node.y
+        const distance = Math.sqrt(dx * dx + dy * dy)
+        const repelRadius = 150
+        
+        if (distance < repelRadius && distance > 0) {
+          const force = (repelRadius - distance) / repelRadius
+          const angle = Math.atan2(dy, dx)
+          node.vx -= Math.cos(angle) * force * 3
+          node.vy -= Math.sin(angle) * force * 3
+        }
+        
+        // Spring back to original position
+        const returnForce = 0.05
+        node.vx += (node.originalX - node.x) * returnForce
+        node.vy += (node.originalY - node.y) * returnForce
+        
+        // Apply damping
+        node.vx *= 0.9
+        node.vy *= 0.9
+        
+        // Update position
+        node.x += node.vx
+        node.y += node.vy
+        
+        return node
+      })
+      
+      setNodes(updatedNodes)
+      
+      // Draw connections between nearby nodes
+      ctx.strokeStyle = 'rgba(23, 23, 23, 0.15)'
+      ctx.lineWidth = 1
+      
+      for (let i = 0; i < updatedNodes.length; i++) {
+        for (let j = i + 1; j < updatedNodes.length; j++) {
+          const node1 = updatedNodes[i]
+          const node2 = updatedNodes[j]
+          
+          const dx = node2.x - node1.x
+          const dy = node2.y - node1.y
+          const distance = Math.sqrt(dx * dx + dy * dy)
+          
+          // Only draw lines between nodes that are close enough
+          if (distance < 250) {
+            const opacity = 1 - (distance / 250)
+            ctx.strokeStyle = `rgba(23, 23, 23, ${opacity * 0.2})`
+            
+            ctx.beginPath()
+            ctx.moveTo(node1.x, node1.y)
+            ctx.lineTo(node2.x, node2.y)
+            ctx.stroke()
+          }
+        }
+      }
+      
+      // Draw nodes
+      ctx.fillStyle = 'rgba(23, 23, 23, 0.3)'
+      updatedNodes.forEach(node => {
+        ctx.beginPath()
+        ctx.arc(node.x, node.y, 2, 0, Math.PI * 2)
+        ctx.fill()
+      })
+      
+      animationFrameRef.current = requestAnimationFrame(animate)
+    }
+    
+    animate()
+    
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
+    }
+  }, [nodes, mousePosition])
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
     element?.scrollIntoView({ behavior: 'smooth' })
@@ -34,6 +163,12 @@ export default function Hero({ data }: HeroProps) {
 
   return (
     <section className="min-h-screen flex items-center justify-center relative px-6 md:px-12 overflow-hidden">
+      {/* Interactive connected lines background */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 pointer-events-none"
+      />
+
       <div className="max-w-7xl w-full">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -138,73 +273,6 @@ export default function Hero({ data }: HeroProps) {
             </motion.button>
           </motion.div>
         </motion.div>
-
-        {/* Enhanced abstract decorative elements */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5, delay: 0.5 }}
-          className="absolute top-1/4 right-8 md:right-32 w-32 h-32 border border-foreground/20 rounded-full pointer-events-none"
-          style={{ 
-            transform: `translate(${mousePosition.x * 0.01}px, ${mousePosition.y * 0.01}px)`
-          }}
-        />
-        
-        <motion.div
-          initial={{ opacity: 0, rotate: 45 }}
-          animate={{ opacity: 1, rotate: 0 }}
-          transition={{ duration: 1.5, delay: 0.7 }}
-          className="absolute bottom-1/4 left-8 md:left-24 w-24 h-24 border border-foreground/10 pointer-events-none"
-          style={{ 
-            transform: `translate(${mousePosition.x * -0.015}px, ${mousePosition.y * -0.015}px)`
-          }}
-        />
-
-        {/* Additional creative elements */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 2, delay: 1 }}
-          className="absolute top-1/2 left-1/2 w-64 h-64 border border-foreground/5 rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-        />
-        
-        <motion.div
-          initial={{ opacity: 0, rotate: -45 }}
-          animate={{ opacity: 1, rotate: 0 }}
-          transition={{ duration: 1.5, delay: 0.9 }}
-          className="absolute top-16 right-1/4 w-16 h-16 border border-foreground/15 pointer-events-none"
-          style={{ 
-            transform: `rotate(${mousePosition.x * 0.05}deg) translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`
-          }}
-        />
-
-        {/* Animated dots */}
-        {[...Array(5)].map((_, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: [0.1, 0.3, 0.1], scale: 1 }}
-            transition={{ 
-              duration: 3, 
-              delay: i * 0.2,
-              repeat: Infinity,
-              repeatType: "reverse"
-            }}
-            className="absolute w-1 h-1 bg-foreground rounded-full pointer-events-none"
-            style={{
-              left: `${20 + i * 15}%`,
-              top: `${30 + i * 10}%`,
-            }}
-          />
-        ))}
-
-        {/* Floating line element */}
-        <motion.div
-          initial={{ opacity: 0, scaleX: 0 }}
-          animate={{ opacity: 0.1, scaleX: 1 }}
-          transition={{ duration: 2, delay: 1.2 }}
-          className="absolute bottom-32 left-0 w-full h-px bg-gradient-to-r from-transparent via-foreground to-transparent pointer-events-none"
-        />
       </div>
     </section>
   )
